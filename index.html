@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Bar Las Cadenas - Carta Completa</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Oswald:wght@700&display=swap');
+
+        body {
+            background-color: #e0d6c5;
+            background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png'); /* Textura madera suave de fondo */
+            font-family: 'Special+Elite', cursive;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .menu-container {
+            background: #f4e4bc;
+            background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+            max-width: 900px;
+            padding: 50px;
+            border: 20px solid transparent;
+            border-image: url('https://img.freepik.com/vector-premium/cadena-metal-negro-aislada-fondo-blanco_1303-12544.jpg') 30 round; /* Simulación de borde de cadena */
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 3px double #333;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+        }
+
+        .logo-text {
+            font-family: 'Oswald', sans-serif;
+            font-size: 4em;
+            letter-spacing: 5px;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .chains-divider {
+            font-size: 2em;
+            margin: 10px 0;
+        }
+
+        .section-title {
+            background: #333;
+            color: #f4e4bc;
+            text-align: center;
+            padding: 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 40px 0 20px 0;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dotted #8b4513;
+            margin-bottom: 8px;
+        }
+
+        .price { font-weight: bold; color: #8b4513; }
+
+        .promo-box {
+            border: 2px solid #333;
+            padding: 15px;
+            margin: 20px 0;
+            background: rgba(0,0,0,0.05);
+        }
+
+        .footer-info {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 0.9em;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="menu-container">
+    <header>
+        <p>DESDE 1967</p>
+        <h1 class="logo-text">LAS CADENAS</h1>
+        <div class="chains-divider">⛓⛓⛓⛓⛓</div>
+        <p>TAPAS / RESTAURANT - CAMBRILS</p>
+    </header>
+
+    <div class="section-title">Menú Festivo - 18,50 €</div>
+    <div class="menu-grid">
+        <div>
+            <strong>PRIMEROS:</strong>
+            <p>Paella Mixta, Ensaladilla Rusa, Canelones de Carne, Escudella Barrejada, Ensalada de Salmón y Mango, Caracoles en Salsa.</p>
+        </div>
+        <div>
+            <strong>SEGUNDOS:</strong>
+            <p>Pollo, Cordero o Secreto Ibérico. <br> 
+            <em>Suplementos: Cochinillo (+4€), Entrecot (+4€), Sepia (+3€).</em></p>
+        </div>
+    </div>
+
+    <div class="section-title">Nuestras Tapas</div>
+    <div class="menu-grid">
+        <div class="item"><span>Patatas Bravas</span><span class="price">7,50€</span></div>
+        <div class="item"><span>Almejas</span><span class="price">13,90€</span></div>
+        <div class="item"><span>Croquetas (Pollo/Cocido)</span><span class="price">8,90€</span></div>
+        <div class="item"><span>Pollo "Las Cadenas"</span><span class="price">12,90€</span></div>
+        <div class="item"><span>Choricillos</span><span class="price">10,00€</span></div>
+        <div class="item"><span>Rabo de Toro</span><span class="price">17,90€</span></div>
+        <div class="item"><span>Sepia Troceada</span><span class="price">14,00€</span></div>
+        <div class="item"><span>Pulpo a la Gallega</span><span class="price">19,00€</span></div>
+        <div class="item"><span>Pata de Pulpo</span><span class="price">21,00€</span></div>
+        <div class="item"><span>Torreznos</span><span class="price">3,00€ u.</span></div>
+    </div>
+
+    <div class="section-title">Bocadillos y Hamburguesas</div>
+    <div class="menu-grid">
+        <div class="item"><span>Hamb. Ternera con patatas</span><span class="price">9,50€</span></div>
+        <div class="item"><span>Hamb. de Buey</span><span class="price">11,00€</span></div>
+        <div class="item"><span>Bocadillo Jamón Salado</span><span class="price">5,50€</span></div>
+        <div class="item"><span>Bocadillo Pechuga Pollo</span><span class="price">5,40€</span></div>
+        <div class="item"><span>Frankfurt / Bratwurst</span><span class="price">4,90€ / 5,30€</span></div>
+    </div>
+
+    <div class="section-title">Platos Combinados</div>
+    <div class="item"><span>Entrecot con guarnición</span><span class="price">15,00€</span></div>
+    <div class="item"><span>Costillas BBQ con guarnición</span><span class="price">15,80€</span></div>
+    <div class="item"><span>Chuletón de Ávila Madurado (1kg - 2 pers)</span><span class="price">38,50€</span></div>
+
+    <div class="section-title">Postres</div>
+    <div class="menu-grid">
+        <div class="item"><span>Crema Catalana</span><span class="price">4,00€</span></div>
+        <div class="item"><span>Tarta de Queso</span><span class="price">4,00€</span></div>
+        <div class="item"><span>Flan con Nata</span><span class="price">3,90€</span></div>
+        <div class="item"><span>Coulant de Chocolate</span><span class="price">5,00€</span></div>
+    </div>
+
+    <footer class="footer-info">
+        <p>C/ GIMBERNAT 7, BAJOS - CAMBRILS (TARRAGONA)</p>
+        <p><strong>RESERVAS: 977 36 33 04</strong></p>
+        <p>IVA INCLUIDO EN TODOS LOS PRECIOS</p>
+    </footer>
+</div>
+
+</body>
+</html>
