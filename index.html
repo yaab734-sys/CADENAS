@@ -6,153 +6,475 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Oswald:wght@700&display=swap');
 
+        :root{
+            --paper-bg: #f4e4bc;
+            --paper-texture: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+            --accent: #8b4513;
+            --dark: #2b2b2b;
+            --muted: rgba(0,0,0,0.08);
+            --chain-url: url('https://img.freepik.com/vector-premium/cadena-metal-negro-aislada-fondo-blanco_1303-12544.jpg');
+            --frame-width: 28px; /* ancho del marco */
+        }
+
+        html, body { height: 100%; box-sizing: border-box; }
+
+        /* fondo general de pantalla (se verá fuera del marco) */
         body {
             background-color: #e0d6c5;
-            background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png'); /* Textura madera suave de fondo */
+            background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
             font-family: 'Special+Elite', cursive;
             margin: 0;
             padding: 20px;
             display: flex;
             justify-content: center;
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
         }
 
+        /* FRAME que rodea la carta (úsalo para crear el borde con border-image) */
+        .page-frame {
+            display: block;
+            width: min(980px, calc(100% - 40px));
+            box-sizing: border-box;
+            background: inherit; /* deja ver el mismo fondo de body dentro del marco */
+            padding: calc(var(--frame-width) + 8px); /* espacio interior para que la carta no toque el borde */
+            margin: 0 auto;
+            border: var(--frame-width) solid transparent;
+            border-image-source: var(--chain-url);
+            border-image-slice: 30;
+            border-image-width: var(--frame-width);
+            border-image-outset: 0;
+            border-image-repeat: round;
+            border-image: var(--chain-url) 30 round;
+            /* opcional: una sombra sutil para separar del fondo si lo deseas */
+            box-shadow: 0 6px 22px rgba(0,0,0,0.12);
+        }
+
+        /* MAIN CARD: la carta ya no necesita el marco, se ajusta dentro de .page-frame */
         .menu-container {
-            background: #f4e4bc;
-            background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
-            max-width: 900px;
-            padding: 50px;
-            border: 20px solid transparent;
-            border-image: url('https://img.freepik.com/vector-premium/cadena-metal-negro-aislada-fondo-blanco_1303-12544.jpg') 30 round; /* Simulación de borde de cadena */
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
-            position: relative;
+            background: var(--paper-bg);
+            background-image: var(--paper-texture);
+            width: 100%;
+            padding: 40px;
+            border: none;
+            border-radius: 2px;
+            box-sizing: border-box;
+            color: #1c1c1c;
         }
 
+        /* Resto reglas (inyectar el CSS ya existente que sigue igual) */
         header {
             text-align: center;
             border-bottom: 3px double #333;
             margin-bottom: 30px;
             padding-bottom: 20px;
         }
+        .logo-text { font-family: 'Oswald', sans-serif; font-size: 4em; letter-spacing: 5px; margin: 0; text-transform: uppercase; line-height: 1; color: #2b2b2b; }
+        .chains-divider { font-size: 2em; margin: 10px 0; color: #6b5848; }
+        .section-title { background: #333; color: var(--paper-bg); text-align: center; padding: 10px; text-transform: uppercase; letter-spacing: 3px; margin: 40px 0 20px 0; }
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .item { display: flex; justify-content: space-between; border-bottom: 1px dotted var(--accent); margin-bottom: 8px; padding-bottom: 6px; word-break: break-word; }
+        .price { font-weight: bold; color: var(--accent); min-width: 70px; text-align: right; }
+        .footer-info { text-align: center; margin-top: 50px; font-size: 0.9em; border-top: 1px solid #333; padding-top: 20px; color: #2b2b2b; }
 
-        .logo-text {
-            font-family: 'Oswald', sans-serif;
-            font-size: 4em;
-            letter-spacing: 5px;
-            margin: 0;
-            text-transform: uppercase;
+        /* language overlay (sin cambios funcionales) */
+        #langOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 18px; box-sizing: border-box; }
+        .lang-box { background: var(--paper-bg); background-image: var(--paper-texture); color: #222; padding: 28px 24px; border-radius: 10px; text-align: center; max-width: 520px; width: 100%; font-family: 'Special+Elite', cursive; box-shadow: 0 8px 30px rgba(0,0,0,0.18); border: 1px solid var(--muted); box-sizing: border-box; }
+        .lang-box h2 { margin: 0 0 10px 0; font-family: 'Oswald', sans-serif; font-size: 1.15rem; letter-spacing: 2px; text-transform: uppercase; background: #333; color: var(--paper-bg); display: inline-block; padding: 8px 14px; border-radius: 4px; }
+        .lang-box p { margin: 10px 0 14px; font-size: 0.95rem; color: #3a3a3a; }
+        .lang-buttons { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 6px; }
+        .lang-buttons button { padding: 10px 12px; border: 1px solid rgba(0,0,0,0.06); background: linear-gradient(#2b2b2b,#242424); color: #fff; cursor: pointer; border-radius: 6px; font-size: 0.98rem; min-width: 140px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 6px 12px rgba(0,0,0,0.16); transition: transform .12s, box-shadow .12s, opacity .12s; font-family: Arial, sans-serif; }
+        .lang-buttons button:hover { transform: translateY(-2px); opacity: 0.96; box-shadow: 0 10px 18px rgba(0,0,0,0.18); }
+
+        @media (max-width: 900px) {
+            .page-frame { width: calc(100% - 40px); padding: calc(var(--frame-width) + 6px); }
+            .menu-container { padding: 34px; }
+            .menu-grid { grid-template-columns: 1fr; gap: 18px; }
         }
-
-        .chains-divider {
-            font-size: 2em;
-            margin: 10px 0;
-        }
-
-        .section-title {
-            background: #333;
-            color: #f4e4bc;
-            text-align: center;
-            padding: 10px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin: 40px 0 20px 0;
-        }
-
-        .menu-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        .item {
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px dotted #8b4513;
-            margin-bottom: 8px;
-        }
-
-        .price { font-weight: bold; color: #8b4513; }
-
-        .promo-box {
-            border: 2px solid #333;
-            padding: 15px;
-            margin: 20px 0;
-            background: rgba(0,0,0,0.05);
-        }
-
-        .footer-info {
-            text-align: center;
-            margin-top: 50px;
-            font-size: 0.9em;
-            border-top: 1px solid #333;
-            padding-top: 20px;
+        @media (max-width: 600px) {
+            body { padding: 12px; }
+            .page-frame { padding: calc(var(--frame-width) + 4px); width: calc(100% - 24px); }
+            .menu-container { padding: 20px; box-shadow: none; }
         }
     </style>
 </head>
 <body>
+    <!-- overlay sigue fuera del flujo para poder centrarlo sobre todo -->
+    <div id="langOverlay" aria-hidden="false">
+        <div class="lang-box" role="dialog" aria-labelledby="langTitle" aria-modal="true">
+            <h2 id="langTitle">Selecciona idioma / Choose language</h2>
+            <p>Español · English · Français · Italiano · Deutsch</p>
+            <div class="lang-buttons">
+                <!-- Español: bandera España -->
+                <button data-lang="es" aria-label="Español">
+                    <span class="flag">🇪🇸</span>
+                    <span>Español</span>
+                </button>
 
-<div class="menu-container">
-    <header>
-        <p>DESDE 1967</p>
-        <h1 class="logo-text">LAS CADENAS</h1>
-        <div class="chains-divider">⛓⛓⛓⛓⛓</div>
-        <p>TAPAS / RESTAURANT - CAMBRILS</p>
-    </header>
+                <!-- Inglés: combinación EEUU + Reino Unido (dos banderas) -->
+                <button data-lang="en" aria-label="English">
+                    <span class="flag double">🇺🇸 🇬🇧</span>
+                    <span>English</span>
+                </button>
 
-    <div class="section-title">Menú Festivo - 18,50 €</div>
-    <div class="menu-grid">
-        <div>
-            <strong>PRIMEROS:</strong>
-            <p>Paella Mixta, Ensaladilla Rusa, Canelones de Carne, Escudella Barrejada, Ensalada de Salmón y Mango, Caracoles en Salsa.</p>
+                <!-- Francés: bandera Francia -->
+                <button data-lang="fr" aria-label="Français">
+                    <span class="flag">🇫🇷</span>
+                    <span>Français</span>
+                </button>
+
+                <!-- Italiano: bandera Italia -->
+                <button data-lang="it" aria-label="Italiano">
+                    <span class="flag">🇮🇹</span>
+                    <span>Italiano</span>
+                </button>
+
+                <!-- Alemán: bandera Alemania -->
+                <button data-lang="de" aria-label="Deutsch">
+                    <span class="flag">🇩🇪</span>
+                    <span>Deutsch</span>
+                </button>
+            </div>
         </div>
-        <div>
-            <strong>SEGUNDOS:</strong>
-            <p>Pollo, Cordero o Secreto Ibérico. <br> 
-            <em>Suplementos: Cochinillo (+4€), Entrecot (+4€), Sepia (+3€).</em></p>
+    </div>
+
+    <!-- page-frame: el marco queda alrededor de la carta -->
+    <div class="page-frame">
+        <!-- la carta dentro del marco -->
+        <div class="menu-container" id="menuContainer" aria-hidden="true">
+            <header>
+                <p id="since">DESDE 1967</p>
+                <h1 class="logo-text">LAS CADENAS</h1>
+                <div class="chains-divider">⛓⛓⛓⛓⛓</div>
+                <p id="subtitle">TAPAS / RESTAURANT - CAMBRILS</p>
+            </header>
+
+            <div class="section-title" id="festiveTitle">Menú Festivo - 18,50 €</div>
+            <div class="menu-grid">
+                <div>
+                    <strong id="firstsTitle">PRIMEROS:</strong>
+                    <p id="firstsDesc">Paella Mixta, Ensaladilla Rusa, Canelones de Carne, Escudella Barrejada, Ensalada de Salmón y Mango, Caracoles en Salsa.</p>
+                </div>
+                <div>
+                    <strong id="secondsTitle">SEGUNDOS:</strong>
+                    <p id="secondsDesc">Pollo, Cordero o Secreto Ibérico. <br>
+                    <em id="supplements">Suplementos: Cochinillo (+4€), Entrecot (+4€), Sepia (+3€).</em></p>
+                </div>
+            </div>
+
+            <div class="section-title" id="tapasTitle">Nuestras Tapas</div>
+            <div class="menu-grid">
+                <div class="item"><span id="dish_patatas_bravas">Patatas Bravas</span><span class="price">7,50€</span></div>
+                <div class="item"><span id="dish_almejas">Almejas</span><span class="price">13,90€</span></div>
+                <div class="item"><span id="dish_croquetas">Croquetas (Pollo/Cocido)</span><span class="price">8,90€</span></div>
+                <div class="item"><span id="dish_pollo_lc">Pollo "Las Cadenas"</span><span class="price">12,90€</span></div>
+                <div class="item"><span id="dish_choricillos">Choricillos</span><span class="price">10,00€</span></div>
+                <div class="item"><span id="dish_rabo">Rabo de Toro</span><span class="price">17,90€</span></div>
+                <div class="item"><span id="dish_sepia">Sepia Troceada</span><span class="price">14,00€</span></div>
+                <div class="item"><span id="dish_pulpo_gallega">Pulpo a la Gallega</span><span class="price">19,00€</span></div>
+                <div class="item"><span id="dish_pata_pulpo">Pata de Pulpo</span><span class="price">21,00€</span></div>
+                <div class="item"><span id="dish_torreznos">Torreznos</span><span class="price">3,00€ u.</span></div>
+            </div>
+
+            <div class="section-title" id="burgTitle">Bocadillos y Hamburguesas</div>
+            <div class="menu-grid">
+                <div class="item"><span id="burger_ternera">Hamb. Ternera con patatas</span><span class="price">9,50€</span></div>
+                <div class="item"><span id="burger_buey">Hamb. de Buey</span><span class="price">11,00€</span></div>
+                <div class="item"><span id="bocadillo_jamon">Bocadillo Jamón Salado</span><span class="price">5,50€</span></div>
+                <div class="item"><span id="bocadillo_pechuga">Bocadillo Pechuga Pollo</span><span class="price">5,40€</span></div>
+                <div class="item"><span id="frankfurt">Frankfurt / Bratwurst</span><span class="price">4,90€ / 5,30€</span></div>
+            </div>
+
+            <div class="section-title" id="combosTitle">Platos Combinados</div>
+            <div class="item"><span id="entrecot">Entrecot con guarnición</span><span class="price">15,00€</span></div>
+            <div class="item"><span id="costillas">Costillas BBQ con guarnición</span><span class="price">15,80€</span></div>
+            <div class="item"><span id="chuletón">Chuletón de Ávila Madurado (1kg - 2 pers)</span><span class="price">38,50€</span></div>
+
+            <div class="section-title" id="dessertsTitle">Postres</div>
+            <div class="menu-grid">
+                <div class="item"><span id="crema_catalana">Crema Catalana</span><span class="price">4,00€</span></div>
+                <div class="item"><span id="tarta_queso">Tarta de Queso</span><span class="price">4,00€</span></div>
+                <div class="item"><span id="flan_nata">Flan con Nata</span><span class="price">3,90€</span></div>
+                <div class="item"><span id="coulant">Coulant de Chocolate</span><span class="price">5,00€</span></div>
+            </div>
+
+            <footer class="footer-info">
+                <p id="address">C/ GIMBERNAT 7, BAJOS - CAMBRILS (TARRAGONA)</p>
+                <p><strong id="reservations">RESERVAS: 977 36 33 04</strong></p>
+                <p id="taxInfo">IVA INCLUIDO EN TODOS LOS PRECIOS</p>
+            </footer>
         </div>
     </div>
 
-    <div class="section-title">Nuestras Tapas</div>
-    <div class="menu-grid">
-        <div class="item"><span>Patatas Bravas</span><span class="price">7,50€</span></div>
-        <div class="item"><span>Almejas</span><span class="price">13,90€</span></div>
-        <div class="item"><span>Croquetas (Pollo/Cocido)</span><span class="price">8,90€</span></div>
-        <div class="item"><span>Pollo "Las Cadenas"</span><span class="price">12,90€</span></div>
-        <div class="item"><span>Choricillos</span><span class="price">10,00€</span></div>
-        <div class="item"><span>Rabo de Toro</span><span class="price">17,90€</span></div>
-        <div class="item"><span>Sepia Troceada</span><span class="price">14,00€</span></div>
-        <div class="item"><span>Pulpo a la Gallega</span><span class="price">19,00€</span></div>
-        <div class="item"><span>Pata de Pulpo</span><span class="price">21,00€</span></div>
-        <div class="item"><span>Torreznos</span><span class="price">3,00€ u.</span></div>
-    </div>
+    <script>
+        // Traducciones completas (títulos, descripciones y nombres de platos)
+        const translations = {
+            es: {
+                langPrompt: "Selecciona idioma",
+                since: "DESDE 1967",
+                subtitle: "TAPAS / RESTAURANT - CAMBRILS",
+                festiveTitle: "Menú Festivo - 18,50 €",
+                firstsTitle: "PRIMEROS:",
+                firstsDesc: "Paella Mixta, Ensaladilla Rusa, Canelones de Carne, Escudella Barrejada, Ensalada de Salmón y Mango, Caracoles en Salsa.",
+                secondsTitle: "SEGUNDOS:",
+                secondsDesc: "Pollo, Cordero o Secreto Ibérico.",
+                supplements: "Suplementos: Cochinillo (+4€), Entrecot (+4€), Sepia (+3€).",
+                tapasTitle: "Nuestras Tapas",
+                burgTitle: "Bocadillos y Hamburguesas",
+                combosTitle: "Platos Combinados",
+                dessertsTitle: "Postres",
+                address: "C/ GIMBERNAT 7, BAJOS - CAMBRILS (TARRAGONA)",
+                reservations: "RESERVAS: 977 36 33 04",
+                taxInfo: "IVA INCLUIDO EN TODOS LOS PRECIOS",
 
-    <div class="section-title">Bocadillos y Hamburguesas</div>
-    <div class="menu-grid">
-        <div class="item"><span>Hamb. Ternera con patatas</span><span class="price">9,50€</span></div>
-        <div class="item"><span>Hamb. de Buey</span><span class="price">11,00€</span></div>
-        <div class="item"><span>Bocadillo Jamón Salado</span><span class="price">5,50€</span></div>
-        <div class="item"><span>Bocadillo Pechuga Pollo</span><span class="price">5,40€</span></div>
-        <div class="item"><span>Frankfurt / Bratwurst</span><span class="price">4,90€ / 5,30€</span></div>
-    </div>
+                dish_patatas_bravas: "Patatas Bravas",
+                dish_almejas: "Almejas",
+                dish_croquetas: "Croquetas (Pollo/Cocido)",
+                dish_pollo_lc: "Pollo \"Las Cadenas\"",
+                dish_choricillos: "Choricillos",
+                dish_rabo: "Rabo de Toro",
+                dish_sepia: "Sepia Troceada",
+                dish_pulpo_gallega: "Pulpo a la Gallega",
+                dish_pata_pulpo: "Pata de Pulpo",
+                dish_torreznos: "Torreznos",
 
-    <div class="section-title">Platos Combinados</div>
-    <div class="item"><span>Entrecot con guarnición</span><span class="price">15,00€</span></div>
-    <div class="item"><span>Costillas BBQ con guarnición</span><span class="price">15,80€</span></div>
-    <div class="item"><span>Chuletón de Ávila Madurado (1kg - 2 pers)</span><span class="price">38,50€</span></div>
+                burger_ternera: "Hamb. Ternera con patatas",
+                burger_buey: "Hamb. de Buey",
+                bocadillo_jamon: "Bocadillo Jamón Salado",
+                bocadillo_pechuga: "Bocadillo Pechuga Pollo",
+                frankfurt: "Frankfurt / Bratwurst",
 
-    <div class="section-title">Postres</div>
-    <div class="menu-grid">
-        <div class="item"><span>Crema Catalana</span><span class="price">4,00€</span></div>
-        <div class="item"><span>Tarta de Queso</span><span class="price">4,00€</span></div>
-        <div class="item"><span>Flan con Nata</span><span class="price">3,90€</span></div>
-        <div class="item"><span>Coulant de Chocolate</span><span class="price">5,00€</span></div>
-    </div>
+                entrecot: "Entrecot con guarnición",
+                costillas: "Costillas BBQ con guarnición",
+                "chuletón": "Chuletón de Ávila Madurado (1kg - 2 pers)",
 
-    <footer class="footer-info">
-        <p>C/ GIMBERNAT 7, BAJOS - CAMBRILS (TARRAGONA)</p>
-        <p><strong>RESERVAS: 977 36 33 04</strong></p>
-        <p>IVA INCLUIDO EN TODOS LOS PRECIOS</p>
-    </footer>
-</div>
+                crema_catalana: "Crema Catalana",
+                tarta_queso: "Tarta de Queso",
+                flan_nata: "Flan con Nata",
+                coulant: "Coulant de Chocolate"
+            },
+            en: {
+                langPrompt: "Choose language",
+                since: "SINCE 1967",
+                subtitle: "TAPAS / RESTAURANT - CAMBRILS",
+                festiveTitle: "Festive Menu - €18.50",
+                firstsTitle: "FIRST COURSES:",
+                firstsDesc: "Mixed paella, Russian salad, Meat cannelloni, Escudella mix, Salmon & mango salad, Snails in sauce.",
+                secondsTitle: "MAIN COURSES:",
+                secondsDesc: "Chicken, Lamb or Iberian pork (Secreto).",
+                supplements: "Supplements: Suckling pig (+€4), Ribeye (+€4), Cuttlefish (+€3).",
+                tapasTitle: "Our Tapas",
+                burgTitle: "Sandwiches & Burgers",
+                combosTitle: "Combination Plates",
+                dessertsTitle: "Desserts",
+                address: "C/ GIMBERNAT 7, GROUND FLOOR - CAMBRILS (TARRAGONA)",
+                reservations: "RESERVATIONS: +34 977 36 33 04",
+                taxInfo: "VAT INCLUDED IN ALL PRICES",
+
+                dish_patatas_bravas: "Patatas Bravas (spicy potatoes)",
+                dish_almejas: "Clams",
+                dish_croquetas: "Croquettes (Chicken/Stew)",
+                dish_pollo_lc: "Las Cadenas Chicken",
+                dish_choricillos: "Choricillos (small chorizo)",
+                dish_rabo: "Oxtail",
+                dish_sepia: "Chopped cuttlefish",
+                dish_pulpo_gallega: "Galician Octopus",
+                dish_pata_pulpo: "Octopus Leg",
+                dish_torreznos: "Torreznos (crispy pork belly)",
+
+                burger_ternera: "Beef burger with fries",
+                burger_buey: "Ox / Premium beef burger",
+                bocadillo_jamon: "Salted Ham Sandwich",
+                bocadillo_pechuga: "Chicken Breast Sandwich",
+                frankfurt: "Frankfurt / Bratwurst",
+
+                entrecot: "Ribeye with garnish",
+                costillas: "BBQ Ribs with garnish",
+                "chuletón": "Aged Ávila Steak (1kg - 2 pers)",
+
+                crema_catalana: "Crema Catalana",
+                tarta_queso: "Cheesecake",
+                flan_nata: "Flan with Cream",
+                coulant: "Chocolate molten cake"
+            },
+            fr: {
+                langPrompt: "Choisissez la langue",
+                since: "DEPUIS 1967",
+                subtitle: "TAPAS / RESTAURANT - CAMBRILS",
+                festiveTitle: "Menu Festif - 18,50 €",
+                firstsTitle: "ENTRÉES:",
+                firstsDesc: "Paella mixte, Salade russe, Cannellonis de viande, Escudella mélangée, Salade saumon et mangue, Escargots en sauce.",
+                secondsTitle: "PLATS PRINCIPAUX:",
+                secondsDesc: "Poulet, Agneau ou Porc ibérique (Secreto).",
+                supplements: "Suppléments: Cochon de lait (+4€), Entrecôte (+4€), Seiche (+3€).",
+                tapasTitle: "Nos Tapas",
+                burgTitle: "Sandwichs & Burgers",
+                combosTitle: "Plats Combinés",
+                dessertsTitle: "Desserts",
+                address: "C/ GIMBERNAT 7, RÉZ-DE-CHAUSSÉE - CAMBRILS (TARRAGONA)",
+                reservations: "RÉSERVATIONS : +34 977 36 33 04",
+                taxInfo: "TVA INCLUSE DANS TOUS LES PRIX",
+
+                dish_patatas_bravas: "Patatas Bravas (pommes de terre épicées)",
+                dish_almejas: "Palourdes",
+                dish_croquetas: "Croquettes (Poulet/viande)",
+                dish_pollo_lc: "Poulet « Las Cadenas »",
+                dish_choricillos: "Choricillos (petits chorizos)",
+                dish_rabo: "Queue de bœuf",
+                dish_sepia: "Seiche coupée",
+                dish_pulpo_gallega: "Poulpe à la Galicienne",
+                dish_pata_pulpo: "Tentacule de poulpe",
+                dish_torreznos: "Torreznos (poitrine de porc croustillante)",
+
+                burger_ternera: "Burger de bœuf avec frites",
+                burger_buey: "Burger de bœuf (premium)",
+                bocadillo_jamon: "Sandwich jambon salé",
+                bocadillo_pechuga: "Sandwich poitrine de poulet",
+                frankfurt: "Frankfurt / Bratwurst",
+
+                entrecot: "Entrecôte avec garniture",
+                costillas: "Côtes BBQ avec garniture",
+                "chuletón": "Entrecôte d'Ávila maturée (1kg - 2 pers)",
+
+                crema_catalana: "Crema Catalana",
+                tarta_queso: "Gâteau au fromage",
+                flan_nata: "Flan avec crème",
+                coulant: "Coulant au chocolat"
+            },
+            it: {
+                langPrompt: "Scegli la lingua",
+                since: "DAL 1967",
+                subtitle: "TAPAS / RESTAURANT - CAMBRILS",
+                festiveTitle: "Menù Festivo - 18,50 €",
+                firstsTitle: "ANTIPASTI:",
+                firstsDesc: "Paella mista, Insalata russa, Cannelloni di carne, Escudella mista, Insalata di salmone e mango, Lumache in salsa.",
+                secondsTitle: "PIATTI PRINCIPALI:",
+                secondsDesc: "Pollo, Agnello o Maiale iberico (Secreto).",
+                supplements: "Supplementi: Maialino (+4€), Entrecôte (+4€), Seppia (+3€).",
+                tapasTitle: "Le nostre Tapas",
+                burgTitle: "Panini e Hamburger",
+                combosTitle: "Piatti Combinati",
+                dessertsTitle: "Dolci",
+                address: "C/ GIMBERNAT 7, PIANO TERRA - CAMBRILS (TARRAGONA)",
+                reservations: "PRENOTAZIONI: +34 977 36 33 04",
+                taxInfo: "IVA INCLUSA IN TUTTI I PREZZI",
+
+                dish_patatas_bravas: "Patatas Bravas (patate piccanti)",
+                dish_almejas: "Vongole",
+                dish_croquetas: "Crocchette (Pollo/Cotto)",
+                dish_pollo_lc: "Pollo \"Las Cadenas\"",
+                dish_choricillos: "Choricillos (piccoli chorizo)",
+                dish_rabo: "Coda di toro",
+                dish_sepia: "Seppia a pezzetti",
+                dish_pulpo_gallega: "Polpo alla Gallega",
+                dish_pata_pulpo: "Gamba di polpo",
+                dish_torreznos: "Torreznos (pancia di maiale croccante)",
+
+                burger_ternera: "Hamburger di manzo con patate",
+                burger_buey: "Hamburger di buey",
+                bocadillo_jamon: "Panino prosciutto salato",
+                bocadillo_pechuga: "Panino petto di pollo",
+                frankfurt: "Frankfurt / Bratwurst",
+
+                entrecot: "Entrecôte con contorno",
+                costillas: "Costine BBQ con contorno",
+                "chuletón": "Bistecca di Ávila maturata (1kg - 2 pers)",
+
+                crema_catalana: "Crema Catalana",
+                tarta_queso: "Cheesecake",
+                flan_nata: "Flan con panna",
+                coulant: "Coulant al cioccolato"
+            },
+            de: {
+                langPrompt: "Sprache wählen",
+                since: "SEIT 1967",
+                subtitle: "TAPAS / RESTAURANT - CAMBRILS",
+                festiveTitle: "Festmenü - 18,50 €",
+                firstsTitle: "VORSPEISEN:",
+                firstsDesc: "Gemischte Paella, Russische Salat, Fleisch-Cannelloni, Escudella-Mix, Lachs-Mango-Salat, Schnecken in Sauce.",
+                secondsTitle: "HAUPTGERICHTE:",
+                secondsDesc: "Hähnchen, Lamm oder Iberisches Schweinefleisch (Secreto).",
+                supplements: "Zuschläge: Spanferkel (+4€), Rumpsteak (+4€), Sepia (+3€).",
+                tapasTitle: "Unsere Tapas",
+                burgTitle: "Sandwiches & Burger",
+                combosTitle: "Kombinationsgerichte",
+                dessertsTitle: "Desserts",
+                address: "C/ GIMBERNAT 7, EG - CAMBRILS (TARRAGONA)",
+                reservations: "RESERVIERUNGEN: +34 977 36 33 04",
+                taxInfo: "MWST IN ALLEN PREISEN ENTHALTEN",
+
+                dish_patatas_bravas: "Patatas Bravas (scharfe Kartoffeln)",
+                dish_almejas: "Muscheln (Venusmuscheln)",
+                dish_croquetas: "Kroketten (Hähnchen/Eintopf)",
+                dish_pollo_lc: "Las Cadenas Hähnchen",
+                dish_choricillos: "Choricillos (kleine Chorizo)",
+                dish_rabo: "Ochsenschwanz",
+                dish_sepia: "Ge hackte Sepia",
+                dish_pulpo_gallega: "Pulpo a la Gallega",
+                dish_pata_pulpo: "Oktopus-Schenkel",
+                dish_torreznos: "Torreznos (knuspriger Schweinebauch)",
+
+                burger_ternera: "Rind-Burger mit Pommes",
+                burger_buey: "Buey / Premium Rind-Burger",
+                bocadillo_jamon: "Sandwich mit gesalzenem Schinken",
+                bocadillo_pechuga: "Sandwich Hähnchenbrust",
+                frankfurt: "Frankfurt / Bratwurst",
+
+                entrecot: "Rumpsteak mit Beilage",
+                costillas: "BBQ Rippchen mit Beilage",
+                "chuletón": "Gealtertes Ávila-Steak (1kg - 2 pers)",
+
+                crema_catalana: "Crema Catalana",
+                tarta_queso: "Käsekuchen",
+                flan_nata: "Flan mit Sahne",
+                coulant: "Schokoladen-Coulant"
+            }
+        };
+
+        const overlay = document.getElementById('langOverlay');
+        const menu = document.getElementById('menuContainer');
+
+        const langToHtmlLang = { es: 'es', en: 'en', fr: 'fr', it: 'it', de: 'de' };
+
+        function applyTranslations(lang) {
+            const t = translations[lang] || translations.es;
+
+            // actualizar atributo lang del documento
+            document.documentElement.lang = langToHtmlLang[lang] || 'es';
+
+            // aplicar todas las claves presentes en el objeto de traducción
+            Object.keys(t).forEach(key => {
+                const el = document.getElementById(key);
+                if (el) el.textContent = t[key];
+            });
+
+            // asegurar que la carta está visible
+            overlay.style.display = 'none';
+            overlay.setAttribute('aria-hidden', 'true');
+            menu.style.display = 'block';
+            menu.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'auto';
+        }
+
+        // configurar botones (overlay aparece siempre al cargar la página)
+        document.querySelectorAll('.lang-buttons button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const lang = btn.getAttribute('data-lang');
+                applyTranslations(lang);
+
+                // opcional: eliminar overlay del DOM para evitar foco accidental
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+                }, 120);
+            });
+        });
+
+        // Mostrar overlay en cada carga (no persistimos elección)
+        overlay.style.display = 'flex';
+        overlay.setAttribute('aria-hidden', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.style.display = 'none';
+    </script>
 
 </body>
 </html>
