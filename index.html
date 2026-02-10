@@ -33,21 +33,16 @@
 
         /* FRAME que rodea la carta (úsalo para crear el borde con border-image) */
         .page-frame {
+            /* marco eliminado: sin borde, sin border-image, sin sombra */
             display: block;
             width: min(980px, calc(100% - 40px));
             box-sizing: border-box;
-            background: inherit; /* deja ver el mismo fondo de body dentro del marco */
-            padding: calc(var(--frame-width) + 8px); /* espacio interior para que la carta no toque el borde */
             margin: 0 auto;
-            border: var(--frame-width) solid transparent;
-            border-image-source: var(--chain-url);
-            border-image-slice: 30;
-            border-image-width: var(--frame-width);
-            border-image-outset: 0;
-            border-image-repeat: round;
-            border-image: var(--chain-url) 30 round;
-            /* opcional: una sombra sutil para separar del fondo si lo deseas */
-            box-shadow: 0 6px 22px rgba(0,0,0,0.12);
+            padding: 0;                 /* quita el acolchado del "marco" */
+            background: transparent;    /* que deje verse el fondo del body */
+            border: none;
+            border-image: none;
+            box-shadow: none;
         }
 
         /* MAIN CARD: la carta ya no necesita el marco, se ajusta dentro de .page-frame */
